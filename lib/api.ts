@@ -9,7 +9,7 @@ export type Dokumen = {
   raw: unknown;
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost/intanjayakab/index.php?rest_route=/intanjaya/v1/dokumen";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost/intanjayakab/wp-json/intanjaya/v1/dokumen";
 
 type AnyRecord = Record<string, unknown>;
 
