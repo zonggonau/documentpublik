@@ -1,21 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "../components/Header";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-sans",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "Dokumen Publik • Kabupaten Intan Jaya",
-  description: "Akses dokumen publik Kabupaten Intan Jaya",
+  description: "Portal resmi untuk akses dokumen publik Pemerintah Kabupaten Intan Jaya: Perencanaan, Keuangan, Produk Hukum, Kinerja Pemerintah, Pengadaan Barang & Jasa, Data & Statistik, SOP & Standar Layanan, dan PPID.",
+  keywords: ["dokumen publik", "intan jaya", "papua", "pemerintah", "transparansi", "ppid"],
+  authors: [{ name: "Pemerintah Kabupaten Intan Jaya" }],
+  openGraph: {
+    title: "Dokumen Publik • Kabupaten Intan Jaya",
+    description: "Portal resmi untuk akses dokumen publik Pemerintah Kabupaten Intan Jaya",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -24,17 +27,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="id" className="scroll-smooth">
+      <body className={`${inter.variable} antialiased`}>
         <Header />
         {children}
-        <footer className="mt-20 border-t">
-          <div className="mx-auto max-w-6xl px-6 py-8 text-sm text-zinc-600 dark:text-zinc-400">
-            © Kabupaten Intan Jaya. Semua hak dilindungi.
-          </div>
-        </footer>
+        {/* <Footer /> */}
       </body>
     </html>
   );

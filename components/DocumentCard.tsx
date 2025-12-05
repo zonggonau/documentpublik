@@ -1,5 +1,6 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
 import { Dokumen } from "../lib/api";
 
 const extOf = (url?: string): string => {
@@ -36,35 +37,34 @@ const iconFor = (url?: string): { src: string; alt: string } => {
 type Props = { item: Dokumen };
 
 export default function DocumentCard({ item }: Props) {
+  const icon = iconFor(item.url);
+
   return (
-    <article className="rounded-xl border p-5 flex flex-col gap-3 hover:shadow-sm transition-shadow">
-      <div className="flex items-start gap-4">
-        {(() => {
-          const icon = iconFor(item.url);
-          return <Image src={icon.src} alt={icon.alt} width={40} height={48} />;
-        })()}
-        <div className="flex-1">
-          <div className="text-xs text-zinc-500 mb-1">{item.kategori}</div>
-          <h3 className="text-base font-semibold">
-          <Link href={`/dokumen/${String(item.id)}`} className="hover:underline">
+    <a
+      href={item.url || "#"}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group block border-2 border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 p-3 transition-all hover:border-stone-800 dark:hover:border-stone-200 hover:shadow-md"
+    >
+      <div className="flex items-start gap-3">
+        {/* File Icon */}
+        <div className="flex-shrink-0 p-2 bg-stone-100 dark:bg-stone-800 border border-stone-300 dark:border-stone-700">
+          <Image
+            src={icon.src}
+            alt={icon.alt}
+            width={20}
+            height={26}
+            className="w-5 h-auto"
+          />
+        </div>
+
+        {/* Title */}
+        <div className="flex-1 min-w-0">
+          <h3 className="text-xs font-serif font-medium text-stone-900 dark:text-stone-100 line-clamp-3 group-hover:underline">
             {item.judul}
-          </Link>
           </h3>
-          <div className="mt-1 inline-flex items-center gap-2">
-            {item.url && <span className="rounded bg-zinc-100 px-2 py-1 text-xs dark:bg-zinc-800">{extOf(item.url)}</span>}
-            {item.tanggal && <span className="text-xs text-zinc-500">{item.tanggal}</span>}
-          </div>
         </div>
       </div>
-      {item.ringkasan && (
-        <p className="text-sm text-zinc-600 dark:text-zinc-400 line-clamp-3">{item.ringkasan}</p>
-      )}
-      <div className="flex items-center justify-end gap-3">
-        <Link href={`/dokumen/${String(item.id)}`} className="rounded border px-3 py-1 text-sm">Detail</Link>
-        {item.url && (
-          <a href={item.url} className="rounded bg-black px-3 py-1 text-sm text-white dark:bg-white dark:text-black" target="_blank" rel="noopener noreferrer">Unduh</a>
-        )}
-      </div>
-    </article>
+    </a>
   );
 }
