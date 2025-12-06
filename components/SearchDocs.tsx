@@ -72,8 +72,8 @@ export default function SearchDocs({ items }: { items: Dokumen[] }) {
             <button
               onClick={() => setSelectedCategory("")}
               className={`px-4 py-2 text-sm font-serif font-medium transition-colors border-2 ${!selectedCategory
-                  ? "bg-stone-800 dark:bg-stone-200 text-stone-50 dark:text-stone-900 border-stone-800 dark:border-stone-200"
-                  : "bg-white dark:bg-stone-900 text-stone-700 dark:text-stone-300 border-stone-300 dark:border-stone-700 hover:border-stone-800 dark:hover:border-stone-200"
+                ? "bg-stone-800 dark:bg-stone-200 text-stone-50 dark:text-stone-900 border-stone-800 dark:border-stone-200"
+                : "bg-white dark:bg-stone-900 text-stone-700 dark:text-stone-300 border-stone-300 dark:border-stone-700 hover:border-stone-800 dark:hover:border-stone-200"
                 }`}
             >
               Semua Kategori
@@ -83,8 +83,8 @@ export default function SearchDocs({ items }: { items: Dokumen[] }) {
                 key={cat}
                 onClick={() => setSelectedCategory(cat === selectedCategory ? "" : cat)}
                 className={`px-4 py-2 text-sm font-serif font-medium transition-colors border-2 ${selectedCategory === cat
-                    ? "bg-stone-800 dark:bg-stone-200 text-stone-50 dark:text-stone-900 border-stone-800 dark:border-stone-200"
-                    : "bg-white dark:bg-stone-900 text-stone-700 dark:text-stone-300 border-stone-300 dark:border-stone-700 hover:border-stone-800 dark:hover:border-stone-200"
+                  ? "bg-stone-800 dark:bg-stone-200 text-stone-50 dark:text-stone-900 border-stone-800 dark:border-stone-200"
+                  : "bg-white dark:bg-stone-900 text-stone-700 dark:text-stone-300 border-stone-300 dark:border-stone-700 hover:border-stone-800 dark:hover:border-stone-200"
                   }`}
               >
                 {cat}

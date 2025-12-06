@@ -44,7 +44,7 @@ export default function DocumentCard({ item }: Props) {
       href={item.url || "#"}
       target="_blank"
       rel="noopener noreferrer"
-      className="group block border-2 border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 p-3 transition-all hover:border-stone-800 dark:hover:border-stone-200 hover:shadow-md"
+      className="group block h-full border-2 border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 p-3 transition-all hover:border-stone-800 dark:hover:border-stone-200 hover:shadow-md"
     >
       <div className="flex items-start gap-3">
         {/* File Icon */}
@@ -58,11 +58,16 @@ export default function DocumentCard({ item }: Props) {
           />
         </div>
 
-        {/* Title */}
+        {/* Title & Description */}
         <div className="flex-1 min-w-0">
-          <h3 className="text-xs font-serif font-medium text-stone-900 dark:text-stone-100 line-clamp-3 group-hover:underline">
+          <h3 className="text-sm font-serif font-medium text-stone-900 dark:text-stone-100 mb-1 group-hover:underline line-clamp-2">
             {item.judul}
           </h3>
+          {item.description && (
+            <p className="text-xs text-stone-500 dark:text-stone-400 line-clamp-3">
+              {item.description}
+            </p>
+          )}
         </div>
       </div>
     </a>

@@ -171,3 +171,70 @@ function intanjaya_insert_terms() {
 	}
 }
 add_action( 'init', 'intanjaya_insert_terms' );
+
+// Register custom REST API route
+function intanjaya_register_rest_route() {
+    register_rest_route('intanjaya/v1', '/dokumen', array(
+        'methods' => 'GET',
+        'callback' => 'intanjaya_get_dokumen',
+        'permission_callback' => '__return_true'
+    ));
+}
+add_action('rest_api_init', 'intanjaya_register_rest_route');
+
+function intanjaya_get_dokumen($request) {
+    $page = $request->get_param('page') ?: 1;
+    $per_page = $request->get_param('per_page') ?: 10;
+    $category = $request->get_param('category');
+    
+    $args = array(
+        'post_type' => 'dokumen_publik',
+        'posts_per_page' => $per_page,
+        'paged' => $page,
+        'post_status' => 'publish'
+    );
+    
+    if ($category) {
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => 'kategori_dokumen',
+                'field' => 'slug',
+                'terms' => $category
+            )
+        );
+    }
+    
+    $query = new WP_Query($args);
+    $items = array();
+    
+    foreach ($query->posts as $post) {
+        $categories = wp_get_post_terms($post->ID, 'kategori_dokumen');
+        $cats = array();
+        foreach ($categories as $cat) {
+            $cats[] = array(
+                'id' => $cat->term_id,
+                'slug' => $cat->slug,
+                'name' => $cat->name
+            );
+        }
+        
+        $items[] = array(
+            'id' => $post->ID,
+            'title' => $post->post_title,
+            'file_url' => get_post_meta($post->ID, '_dokumen_file_url', true),
+            'permalink' => get_permalink($post->ID),
+            'categories' => $cats,
+            'date' => $post->post_date,
+            'excerpt' => $post->post_excerpt,
+            'description' => $post->post_content ? strip_tags($post->post_content) : $post->post_excerpt // Add description from content/excerpt
+        );
+    }
+    
+    return array(
+        'page' => (int)$page,
+        'per_page' => (int)$per_page,
+        'total' => $query->found_posts,
+        'total_pages' => $query->max_num_pages,
+        'items' => $items
+    );
+}

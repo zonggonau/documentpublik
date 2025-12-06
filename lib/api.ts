@@ -4,7 +4,7 @@ export type Dokumen = {
   kategori: string;
   tanggal?: string;
   url?: string;
-  ringkasan?: string;
+  description?: string;
   sumber?: string;
   raw: unknown;
 };
@@ -32,15 +32,19 @@ const normalizeItem = (item: AnyRecord): Dokumen => {
   const category = catSlugOrName;
   const date = pickFirst(item, ["tanggal", "date", "created_at", "post_date"]);
   const url = pickFirst(item, ["file_url", "url", "file", "link", "guid", "download_url"]);
-  const excerpt = pickFirst(item, ["ringkasan", "excerpt", "summary", "content"]);
+  let excerpt = pickFirst(item, ["description", "ringkasan", "excerpt", "summary", "content"]);
+  if (excerpt && typeof excerpt === "object" && "rendered" in excerpt) {
+    excerpt = (excerpt as { rendered: unknown }).rendered;
+  }
+
   const source = pickFirst(item, ["permalink", "sumber", "source"]);
   return {
     id,
-    judul: typeof title === "string" ? title : String(title),
+    judul: typeof title === "string" ? title : (title && typeof title === "object" && "rendered" in title) ? String((title as { rendered: unknown }).rendered) : String(title),
     kategori: Array.isArray(category) ? String(category[0]) : String(category),
     tanggal: typeof date === "string" ? date : date ? String(date) : undefined,
     url: typeof url === "string" ? url : url ? String(url) : undefined,
-    ringkasan: typeof excerpt === "string" ? excerpt : excerpt ? String(excerpt) : undefined,
+    description: typeof excerpt === "string" ? excerpt : excerpt ? String(excerpt) : undefined,
     sumber: typeof source === "string" ? source : source ? String(source) : undefined,
     raw: item,
   };
